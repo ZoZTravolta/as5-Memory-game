@@ -1,10 +1,18 @@
+'use strict';
+
 const imgBase = {};
 const cards = {};
 const game = {};
 
-imgBase.imgApi = 'https://dog.ceo/api/breeds/image/random';
-imgBase.numOfImagesToGet = 9;
-imgBase.imgArr = [];
+game.start=()=>{
+    imgBase.imgApi = 'https://dog.ceo/api/breeds/image/random';
+    imgBase.numOfImagesToGet = 2;
+    imgBase.imgArr = [];
+    imgBase.buildPicsDataBase();
+    cards.reset();
+}
+
+
 imgBase.buildPicsDataBase = async () => {
     $('.loader').addClass('show')
     for (let i = 0; i < imgBase.numOfImagesToGet; i++) {
@@ -20,11 +28,11 @@ imgBase.buildPicsDataBase = async () => {
             console.log('error loading images')
         }
     }
-    cards.shuffleArray();
+    imgBase.shuffleArray();
     $('.loader').removeClass('show');
 
 }
-cards.shuffleArray = () => {
+imgBase.shuffleArray = () => {
     function shuffle(arra1) {
         let ctr = arra1.length;
         let temp;
@@ -42,35 +50,69 @@ cards.shuffleArray = () => {
         }
         return arra1;
     }
-    console.log(shuffle(imgBase.imgArr));
     cards.createCards();
 }
 
+cards.reset=()=>{
+    cards.card1 = null;
+    cards.card2 = null;
+    $('.card').attr("disabled", false);
+}
+
 cards.createCards = () => {
-    for (index in imgBase.imgArr) {
+    for (let index in imgBase.imgArr) {
         $('.game').append(`<div class="card" id="${index}" value="${index}"  />`);
-        $(`#${index}`).on('click', function(){
+        $(`#${index}`).click(function(){
             cards.clickOnCard(this);
             
         })
     }
 };
 
-cards.clickOnCard = (me) => {
-    me.style.backgroundImage = `url("${imgBase.imgArr[me.id]}")`;
-    cards.checkIfTwoFilliped()
-}
-
-
-cards.checkIfTwoFilliped = () =>{
+cards.clickOnCard = (cardThatClicked) => {
+    if (typeof $(cardThatClicked).attr("disabled") === typeof undefined || $(cardThatClicked).attr("disabled") === false) {
+        $(cardThatClicked).attr("disabled", true);
+        cards.checkIfTwoFilliped(cardThatClicked);
+    }
+    else{
+        console.log('disabled')
+    }
     
 }
 
+cards.checkIfTwoFilliped = (cardThatClicked) =>{
+    if (cards.card1 == null){
+        cards.card1 = cardThatClicked;
+        cardThatClicked.style.backgroundImage = `url("${imgBase.imgArr[cardThatClicked.id]}")`;
+    }
+    else if (cards.card2 == null){
+        cards.card2 = cardThatClicked;
+        cardThatClicked.style.backgroundImage = `url("${imgBase.imgArr[cardThatClicked.id]}")`;
+        cards.checkIfMatch()
+    }
+}
+
+cards.checkIfMatch =()=>{
+    if ($(cards.card1).css('background-image') == $(cards.card2).css('background-image')){
+        console.log('giveScore();');
+        $(cards.card1).unbind();
+        $(cards.card2).unbind();
+        cards.reset();
+    }
+    else{
+        setTimeout(() => {
+            $(cards.card1).css('background-image' , '');
+            $(cards.card2).css('background-image' , '');
+            console.log('FillipBack();');
+            cards.reset();
+        }, 2000);
+    }
+};
 
 
 
+game.start();
 
-imgBase.buildPicsDataBase();
 
 
 
