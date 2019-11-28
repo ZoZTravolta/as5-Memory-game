@@ -7,12 +7,51 @@
 }
 
 .card {
-  width: 150px;
-  height: 150px;
-  background-image: url("https://i.pinimg.com/originals/ac/8b/82/ac8b82d8ec37c6bbe98d1ebc51a326a7.jpg");
   display: inline-block;
   margin: 10px;
+  position: relative;
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transform-origin: center right;
+          transform-origin: center right;
+  -webkit-transition: -webkit-transform 1s;
+  transition: -webkit-transform 1s;
+  transition: transform 1s;
+  transition: transform 1s, -webkit-transform 1s;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
+}
+
+.card .front, .card .back {
+  width: 150px;
+  height: 150px;
   background-size: cover;
   background-position: center center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.card .front {
+  z-index: 1;
+  background-image: url("https://i.pinimg.com/originals/ac/8b/82/ac8b82d8ec37c6bbe98d1ebc51a326a7.jpg");
+}
+
+.card .back {
+  background-image: url(../images/loader.gif);
+  -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
+}
+
+.card.card.is-flipped {
+  -webkit-transform: translateX(-100%) rotateY(-180deg);
+          transform: translateX(-100%) rotateY(-180deg);
+}
+
+.card.card.is-flipped .back {
+  z-index: 1;
 }
 /*# sourceMappingURL=style.css.map */
