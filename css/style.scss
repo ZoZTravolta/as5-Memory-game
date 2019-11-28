@@ -8,38 +8,31 @@
 .card {
     display: inline-block;
     margin: 10px;
-    position: relative;
-    width:150px;
-    height: 150px;
     cursor: pointer;
+    perspective: 1000px;
+    position: relative;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    transition: transform 0.8s;
     transform-style: preserve-3d;
-    transform-origin: center right;
-    transition: transform 1s;
-    animation-delay: 2s;
     .front, .back{
-        width:150px;
-        height: 150px;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
         background-size: cover;
         background-position: center center;
-        position: absolute;
-        top: 0;
-        left: 0;
     }
     .front{
-        z-index: 1;
         background-image: url("https://i.pinimg.com/originals/ac/8b/82/ac8b82d8ec37c6bbe98d1ebc51a326a7.jpg");
     }
     .back{
-        background-image: url(../images/loader.gif);
-        transform: scaleX(-1);
+        transform: rotateY(180deg);
     }
-
-    &.card.is-flipped {
-        transform: translateX(-100%) rotateY(-180deg);
-        .back{
-            z-index: 1;
-        }
-      }
+    &.is-flipped  {
+        transform: rotateY(180deg);
+    }
 }
 
 .img-tank{
@@ -47,7 +40,11 @@
 }
 
 
+  
 
+  
 
+  
+  
 
 
