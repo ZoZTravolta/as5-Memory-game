@@ -1,17 +1,56 @@
 'use strict';
 
+
+
 $(document).ready(function(){
-    game.start();
+    game.getInputFromUsers();
 })
 const imgBase = {};
 const cards = {};
 const game = {};
+const modal = {};
 
+game.getInputFromUsers=()=>{
+    $('#theme-buttons button').on('click', function(){
+        imgBase.numOfImagesToGet = this.value;
+        $('#theme-buttons button').removeClass('selected')
+        $(this).addClass('selected');
+        game.checkIfWeCanStart()
+    });
+    $('#level-buttons button').on('click', function(){
+        //game.numOfImagesToGet = this.value;
+        $('#level-buttons button').removeClass('selected')
+        $(this).addClass('selected');
+        game.checkIfWeCanStart()
+    });
+}
 
+game.checkIfWeCanStart=()=>{
+    if ($('#level-buttons button').hasClass('selected') &&  $('#theme-buttons button').hasClass('selected')){
+        let theme = $('#theme-buttons button.selected').val();
+        console.log(theme)
+        let numOfCards = $('#level-buttons button.selected').val();
+        game.start(theme , numOfCards);
+        $('.welcome').hide();
+    }
+}
 
-game.start=()=>{
-    imgBase.imgApi = 'https://dog.ceo/api/breeds/image/random';
-    imgBase.numOfImagesToGet = 9;
+game.start=(theme,numOfCards)=>{
+    
+    switch (theme){
+        case 'dogs':
+            imgBase.imgApi = 'https://dog.ceo/api/breeds/image/random';
+            imgBase.keyToGet = 'message'
+            $('body').addClass('dogs');
+            break;
+        case 'cats':
+            imgBase.imgApi = 'https://aws.random.cat/meow';
+            imgBase.keyToGet = 'file'
+            $('body').addClass('cats')
+            break;
+    }
+    
+    imgBase.numOfImagesToGet = numOfCards;
     imgBase.imgArr = [];
     imgBase.buildPicsDataBase();
     cards.reset();
@@ -27,8 +66,8 @@ imgBase.buildPicsDataBase = async () => {
                 url: imgBase.imgApi,
                 dataType: 'json',
             }).promise()
-            imgBase.imgArr.push(getImage.message);
-            imgBase.imgArr.push(getImage.message);
+            imgBase.imgArr.push(getImage[imgBase.keyToGet]);
+            imgBase.imgArr.push(getImage[imgBase.keyToGet]);
         }
         catch{
             console.log('error loading images')
@@ -66,19 +105,18 @@ imgBase.shuffleArray = () => {
         return arr;
     }
     shuffle(imgBase.imgArr)
-    console.log(imgBase.imgArr)
     cards.createCards();
 }
 
 cards.reset=()=>{
     cards.card1 = null;
     cards.card2 = null;
-    $('.card').attr("disabled", false);
+    $('.memoryCard').attr("disabled", false);
 }
 
 cards.createCards = () => {
     for (let index in imgBase.imgArr) {
-        $('.game').append(`<div class="card" id="${index}" value="${index}">
+        $('.game').append(`<div class="memoryCard" id="${index}" value="${index}">
             <div class="front"></div>
             <div class="back"></div>
         </div>`);
@@ -134,7 +172,7 @@ game.fillipBack = () =>{
         $(cards.card1).removeClass('is-flipped');
         $(cards.card2).removeClass('is-flipped');
         cards.reset();
-    }, 2000);
+    }, 1000);
 }
 
 game.giveScore = ()=>{

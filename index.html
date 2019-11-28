@@ -5,12 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <header>
-
+        <div class="logo">
+            Memory game
+        </div>
+        <div class="reset-container">
+            <button class="reset-btn">Restart game</button>
+        </div>
     </header>
+    <div class="welcome">
+        <div class="blanket">
+            <div class="modal">
+                <h1>Welcome to the memory game</h1>
+                <h2>Choose a theme</h2>
+                <div id="theme-buttons">
+                    <button id="dogs" value="dogs">Dogs</button>
+                    <button id="cats" value="cats">Cats</button>
+                    <button id="space" value="space">Space</button>
+                </div>
+                <h2>Choose difficulty level</h2>
+                <div id="level-buttons">
+                    <button id="easy" value="6">Easy</button>
+                    <button id="medium" value="9">Medium</button>
+                    <button id="hard" value="12">Hard</button>
+                </div>
+                <div class="start">
+                    <button id="start-game">Start Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <main>
         <div class="game">
             <div class="loader">loading</div>
