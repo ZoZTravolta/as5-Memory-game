@@ -2,7 +2,7 @@
 $(document).ready(function(){
     game.reset();
     $('.reset-btn').on('click', function(){
-        game.reset();
+        location.reload(true);
     })
 });
 
@@ -13,17 +13,15 @@ let cards = {};
 let game = {};
 let modal = {};
 
-
-
 game.reset=()=>{
     $('.welcome').show();
+    $('.win').hide();
     $('#theme-buttons button').removeClass('selected');
     $('#level-buttons button').removeClass('selected');
-   
     $('.game').empty();
     $('.loader').addClass('show');
     imgBase.imgArr = [];  
-     game.getInputsFromUser();
+    game.getInputsFromUser();
 };
 
 game.getInputsFromUser=()=>{
@@ -46,7 +44,7 @@ game.checkIfWeCanStart=()=>{
         let theme = $('#theme-buttons button.selected').val();
         let numOfCards = $('#level-buttons button.selected').val();
         game.start(theme , numOfCards);
-        $('.welcome').hide();
+        $('.welcome').fadeOut();
     }
 };
 
@@ -69,13 +67,14 @@ game.start=(theme,numOfCards)=>{
     imgBase.buildPicsDataBase();
     cards.reset();
     game.score = 0;
+    game.guesses = 0;
+    game.finalScore = 100;
 };
 
 
 
 imgBase.buildPicsDataBase = async () => {
    let numOfImagesToGet = imgBase.numOfImagesToGet;
-   let imgArr;
     $('.loader').addClass('show');
     for (let i = 0; i < numOfImagesToGet; i++) {
         try {
@@ -147,6 +146,7 @@ cards.createCards = () => {
 };
 
 cards.clickOnCard = (cardThatClicked) => {
+    
     if (typeof $(cardThatClicked).attr("disabled") === typeof undefined || $(cardThatClicked).attr("disabled") === false) {
         $(cardThatClicked).attr("disabled", true);
         cards.flipCard(cardThatClicked);
@@ -154,7 +154,6 @@ cards.clickOnCard = (cardThatClicked) => {
     else{
         console.log('disabled')
     }
-    
 };
 
 cards.flipCard = (cardThatClicked) =>{
@@ -168,6 +167,8 @@ cards.flipCard = (cardThatClicked) =>{
         cards.card2 = cardThatClicked;
         $(cardThatClicked).addClass('is-flipped');
         back.style.backgroundImage = `url("${imgBase.imgArr[cardThatClicked.id]}")`;
+        game.guesses ++
+        $('.guesses').text(game.guesses)
         cards.checkIfMatch()
     }
 };
@@ -188,6 +189,8 @@ game.match=()=>{
     game.giveScore();
 };
 game.fillipBack = () =>{
+    game.finalScore --;
+    console.log(game.finalScore);
     setTimeout(() => {
         $(cards.card1).removeClass('is-flipped');
         $(cards.card2).removeClass('is-flipped');
@@ -197,12 +200,34 @@ game.fillipBack = () =>{
 
 game.giveScore = ()=>{
     game.score++;
-    console.log(game.score);
+    $('.score').text(game.score)
+    console.log(game.finalScore);
     if (game.score == imgBase.numOfImagesToGet){
-        console.log('win');
+        game.win();
+    }
+};
+
+game.win = () =>{
+    
+    if (game.finalScore < 0){
+        $('.final-score').text('0');
+        $('.final-score').css('color', 'red');
+    }
+    else{
+        $('.final-score').text(game.finalScore);
+        if(game.finalScore > game.finalScore * .7){
+            $('.final-score').css('color', 'green');
+        }
+        else if(game.finalScore > game.finalScore * .5){
+            $('.final-score').css('color', 'orange');
+        }
+        else{
+            $('.final-score').css('color', 'red');
+        }
     }
     
-};
+    $('.win').fadeIn();
+}
 
 
 

@@ -17,6 +17,7 @@
             <button class="reset-btn">Restart game</button>
         </div>
     </header>
+    
     <div class="welcome">
         <div class="blanket">
             <div class="modal">
@@ -29,15 +30,33 @@
                 </div>
                 <h2>Choose difficulty level</h2>
                 <div id="level-buttons">
-                    <button id="easy" value="6">Easy</button>
+                    <button id="easy"  value="6">Easy</button>
                     <button id="medium" value="9">Medium</button>
                     <button id="hard" value="12">Hard</button>
                 </div>
             </div>
         </div>
     </div>
+    <div class="win">
+            <div class="blanket">
+                <div class="modal">
+                    <h1>You found all matches! WooooHooo!</h1>
+                    <h2>
+                        Your score is: <br />
+                        <span class="final-score"></span>
+                    </h2>
+                </div>
+            </div>
+        </div>
     <main>
         <div class="loader"><img src="./images/loader.gif" /></div>
+        <div class="userScore">
+            <span>Guesses:</span>
+            <span class="guesses">0</span>
+            <span> | </span>
+            <span>Cards found:</span>
+            <span class="score">0</span>
+        </div>
         <div class="game">    
         </div>
     </main>
