@@ -22,6 +22,10 @@
         <div class="blanket">
             <div class="modal">
                 <h1>Welcome to the memory game</h1>
+                <h2>
+                    whats your name?
+                </h2>
+                <input id='user-name' type="text" required />
                 <h2>Choose a theme</h2>
                 <div id="theme-buttons">
                     <button id="dogs" value="dogs">Dogs</button>
@@ -30,7 +34,7 @@
                 </div>
                 <h2>Choose difficulty level</h2>
                 <div id="level-buttons">
-                    <button id="easy"  value="6">Easy</button>
+                    <button id="easy"  value="1">Easy</button>
                     <button id="medium" value="9">Medium</button>
                     <button id="hard" value="12">Hard</button>
                 </div>
@@ -51,6 +55,8 @@
     <main>
         <div class="loader"><img src="./images/loader.gif" /></div>
         <div class="userScore">
+            <span>hi</span>
+            <span id="name"></span>
             <span>Guesses:</span>
             <span class="guesses">0</span>
             <span> | </span>

@@ -122,6 +122,15 @@ header .logo {
   line-height: 1em;
 }
 
+.welcome .blanket .modal h2, .win .blanket .modal h2 {
+  margin-bottom: 3px;
+}
+
+.welcome .blanket .modal #user-name, .win .blanket .modal #user-name {
+  width: 150px;
+  font-size: 1.2em;
+}
+
 .welcome .blanket .modal button, .win .blanket .modal button {
   padding: 5px 10px;
   background-color: white;

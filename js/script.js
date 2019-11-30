@@ -20,8 +20,9 @@ game.reset=()=>{
     $('#level-buttons button').removeClass('selected');
     $('.game').empty();
     $('.loader').addClass('show');
-    imgBase.imgArr = [];  
+    imgBase.imgArr = [];
     game.getInputsFromUser();
+    
 };
 
 game.getInputsFromUser=()=>{
@@ -40,9 +41,17 @@ game.getInputsFromUser=()=>{
 }
 
 game.checkIfWeCanStart=()=>{
+    game.currentUser = $('#user-name').val();
+    if (game.currentUser == ''){
+        $('#name').text('guest,');
+    }
+    else{
+        $('#name').text(game.currentUser + ',');
+    }
     if ($('#level-buttons button').hasClass('selected') &&  $('#theme-buttons button').hasClass('selected')){
         let theme = $('#theme-buttons button.selected').val();
         let numOfCards = $('#level-buttons button.selected').val();
+        game.level = $('#level-buttons button.selected').attr('id');
         game.start(theme , numOfCards);
         $('.welcome').fadeOut();
     }
@@ -201,14 +210,12 @@ game.fillipBack = () =>{
 game.giveScore = ()=>{
     game.score++;
     $('.score').text(game.score)
-    console.log(game.finalScore);
     if (game.score == imgBase.numOfImagesToGet){
         game.win();
     }
 };
 
 game.win = () =>{
-    
     if (game.finalScore < 0){
         $('.final-score').text('0');
         $('.final-score').css('color', 'red');
@@ -225,12 +232,31 @@ game.win = () =>{
             $('.final-score').css('color', 'red');
         }
     }
-    
+    game.saveToLocalStorage();
     $('.win').fadeIn();
 }
+game.usersScore = {}    
+game.usersScore.names = [];
+game.usersScore.levels = [];
+game.usersScore.score = [];
 
+//game.usersScore = {names: ['avi' , 'zoz'], levels: ['rrr', 'sss'], score: ['66', '77']}    
 
+game.saveToLocalStorage =()=>{
+    const usersScore = JSON.parse(localStorage.getItem("usersScore")) || [];
+    const currentUser = {
+        name: game.currentUser,
+        score: game.finalScore,
+        level: game.level,
+    };
+    usersScore.push(currentUser);
+    localStorage.setItem("usersScore", JSON.stringify(usersScore));
+   game.showScoreTable();
+};
 
+game.showScoreTable=()=>{
+    
+};
 
 
 
