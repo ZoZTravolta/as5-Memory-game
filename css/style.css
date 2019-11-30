@@ -127,8 +127,11 @@ header .logo {
 }
 
 .welcome .blanket .modal #user-name, .win .blanket .modal #user-name {
-  width: 150px;
+  width: 200px;
   font-size: 1.2em;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  padding-left: 5px;
 }
 
 .welcome .blanket .modal button, .win .blanket .modal button {
@@ -143,6 +146,20 @@ header .logo {
   background-color: chocolate;
   color: white;
   border: 0;
+}
+
+.welcome .blanket .modal #highScore-table, .win .blanket .modal #highScore-table {
+  margin: auto;
+  width: 90%;
+  text-align: left;
+}
+
+.welcome .blanket .modal #highScore-table td, .win .blanket .modal #highScore-table td {
+  border-bottom: 1px solid lightgray;
+}
+
+.welcome .blanket .modal #highScore-table tr td:last-child, .win .blanket .modal #highScore-table tr td:last-child {
+  text-align: right;
 }
 
 main {

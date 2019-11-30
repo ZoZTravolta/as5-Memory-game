@@ -43,18 +43,19 @@ game.getInputsFromUser=()=>{
 game.checkIfWeCanStart=()=>{
     game.currentUser = $('#user-name').val();
     if (game.currentUser == ''){
-        $('#name').text('guest,');
+        $('#user-name').css('border', '2px solid red');
     }
     else{
-        $('#name').text(game.currentUser + ',');
+        $('.name').text(game.currentUser + ',');
+        if ($('#level-buttons button').hasClass('selected') &&  $('#theme-buttons button').hasClass('selected') && game.currentUser != ''){
+            let theme = $('#theme-buttons button.selected').val();
+            let numOfCards = $('#level-buttons button.selected').val();
+            game.level = $('#level-buttons button.selected').attr('id');
+            game.start(theme , numOfCards);
+            $('.welcome').fadeOut();
+        }
     }
-    if ($('#level-buttons button').hasClass('selected') &&  $('#theme-buttons button').hasClass('selected')){
-        let theme = $('#theme-buttons button.selected').val();
-        let numOfCards = $('#level-buttons button.selected').val();
-        game.level = $('#level-buttons button.selected').attr('id');
-        game.start(theme , numOfCards);
-        $('.welcome').fadeOut();
-    }
+   
 };
 
 game.start=(theme,numOfCards)=>{
@@ -79,8 +80,6 @@ game.start=(theme,numOfCards)=>{
     game.guesses = 0;
     game.finalScore = 100;
 };
-
-
 
 imgBase.buildPicsDataBase = async () => {
    let numOfImagesToGet = imgBase.numOfImagesToGet;
@@ -197,6 +196,7 @@ game.match=()=>{
     cards.reset();
     game.giveScore();
 };
+
 game.fillipBack = () =>{
     game.finalScore --;
     console.log(game.finalScore);
@@ -211,11 +211,11 @@ game.giveScore = ()=>{
     game.score++;
     $('.score').text(game.score)
     if (game.score == imgBase.numOfImagesToGet){
-        game.win();
+        game.finish();
     }
 };
 
-game.win = () =>{
+game.finish = () =>{
     if (game.finalScore < 0){
         $('.final-score').text('0');
         $('.final-score').css('color', 'red');
@@ -235,27 +235,41 @@ game.win = () =>{
     game.saveToLocalStorage();
     $('.win').fadeIn();
 }
-game.usersScore = {}    
-game.usersScore.names = [];
-game.usersScore.levels = [];
-game.usersScore.score = [];
-
-//game.usersScore = {names: ['avi' , 'zoz'], levels: ['rrr', 'sss'], score: ['66', '77']}    
 
 game.saveToLocalStorage =()=>{
-    const usersScore = JSON.parse(localStorage.getItem("usersScore")) || [];
+    let currentLevel;
+    let usersScoreEasy;
+    let usersScoreMedium;
+    let usersScoreHard;
+    const usersScoreLevels = [usersScoreEasy, usersScoreMedium, usersScoreHard];
+    switch(game.level){
+        case 'easy':
+            currentLevel = 0
+            break;
+        case 'medium':
+            currentLevel = 1
+            break;
+        case 'hard':
+            currentLevel = 2
+            break;
+    }
+    usersScoreLevels[currentLevel] = JSON.parse(localStorage.getItem(game.level)) || [];
     const currentUser = {
         name: game.currentUser,
         score: game.finalScore,
         level: game.level,
     };
-    usersScore.push(currentUser);
-    localStorage.setItem("usersScore", JSON.stringify(usersScore));
-   game.showScoreTable();
+    usersScoreLevels[currentLevel].push(currentUser);
+    localStorage.setItem(game.level, JSON.stringify(usersScoreLevels[currentLevel]));
+    let nowStorage = JSON.parse(localStorage.getItem(game.level)) || [];
+    game.showScoreTable(nowStorage);
 };
 
-game.showScoreTable=()=>{
-    
+game.showScoreTable=(nowStorage)=>{
+    nowStorage.sort((a, b) => parseInt(b.score) - parseInt(a.score) );
+    for (let i in nowStorage){
+        $('#highScore-table').append(`<tr><td>${nowStorage[i].name}</td><td>${nowStorage[i].score}</td></tr>`)
+    }
 };
 
 
