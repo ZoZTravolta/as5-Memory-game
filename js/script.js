@@ -7,7 +7,6 @@ $(document).ready(function(){
 });
 
 
-
 let imgBase = {};
 let cards = {};
 let game = {};
@@ -175,30 +174,30 @@ cards.flipCard = (cardThatClicked) =>{
         cards.card2 = cardThatClicked;
         $(cardThatClicked).addClass('is-flipped');
         back.style.backgroundImage = `url("${imgBase.imgArr[cardThatClicked.id]}")`;
-        game.guesses ++
-        $('.guesses').text(game.guesses)
         cards.checkIfMatch()
     }
 };
 
 cards.checkIfMatch =()=>{
     if ($(cards.card1.getElementsByClassName('back')[0]).css('background-image') == $(cards.card2.getElementsByClassName('back')[0]).css('background-image')){
-        game.match();
+        game.score++;
+        cards.match();
     }
     else{
-        game.fillipBack();
+        game.guesses ++
+        $('.guesses').text(game.guesses)
+        cards.fillipBack();
     }
 };
 
-game.match=()=>{
+cards.match=()=>{
     $(cards.card1).unbind();
     $(cards.card2).unbind();
     cards.reset();
     game.giveScore();
 };
 
-game.fillipBack = () =>{
-    game.finalScore --;
+cards.fillipBack = () =>{
     console.log(game.finalScore);
     setTimeout(() => {
         $(cards.card1).removeClass('is-flipped');
@@ -208,7 +207,6 @@ game.fillipBack = () =>{
 };
 
 game.giveScore = ()=>{
-    game.score++;
     $('.score').text(game.score)
     if (game.score == imgBase.numOfImagesToGet){
         game.finish();
@@ -216,21 +214,14 @@ game.giveScore = ()=>{
 };
 
 game.finish = () =>{
-    if (game.finalScore < 0){
+    game.finalScore = game.finalScore - (game.guesses *5);
+    if (game.finalScore <= 0){
         $('.final-score').text('0');
         $('.final-score').css('color', 'red');
     }
     else{
         $('.final-score').text(game.finalScore);
-        if(game.finalScore > game.finalScore * .7){
-            $('.final-score').css('color', 'green');
-        }
-        else if(game.finalScore > game.finalScore * .5){
-            $('.final-score').css('color', 'orange');
-        }
-        else{
-            $('.final-score').css('color', 'red');
-        }
+        $('.final-score').css('color', 'green');
     }
     game.saveToLocalStorage();
     $('.win').fadeIn();
