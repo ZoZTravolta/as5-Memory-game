@@ -9,33 +9,60 @@ In the end of the game the user gets his/hers score and a table with the highest
 Under the hood:
 
 js:
+
 --> objects: for namespaces:
+
     let imgBase = {};
+
     let cards = {};
+
     let game = {};
+
     let modal = {};
+
 --> functions: most of the function does exactly what there name says they does.
+
     game.reset
+
     game.getInputsFromUser
+
     game.checkIfWeCanStart
+
     game.start
+
     imgBase.buildPicsDataBase
+
     imgBase.loadAllImages
+
     imgBase.shuffleArray
+
     cards.reset
+
     cards.createCards
+
     cards.clickOnCard
+
     cards.flipCard
+
     cards.checkIfMatch
+
     cards.match
+
     cards.fillipBack
+
     game.giveScore
+
     game.finish
+
     game.saveToLocalStorage
+
     game.showScoreTable
 
+
 html: 
+
     Most of the app is built in the html, only the cards are made in the js.
-    
+
 css:
+
     Use scss to compile css.
