@@ -2,7 +2,10 @@
 $(document).ready(function(){
     game.reset();
     $('.reset-btn').on('click', function(){
-        location.reload(true);
+        $('#level-buttons button').unbind();
+        $('#theme-buttons button').unbind();
+        game.reset();
+
     })
 });
 
@@ -20,6 +23,11 @@ game.reset=()=>{
     $('.game').empty();
     $('.loader').addClass('show');
     imgBase.imgArr = [];
+    game.score = 0;
+    game.guesses = 0;
+    game.finalScore = 100;
+    $('.guesses').text(game.guesses);
+    $('.score').text(game.score);
     game.getInputsFromUser();
     
 };
@@ -75,9 +83,6 @@ game.start=(theme,numOfCards)=>{
     imgBase.numOfImagesToGet = numOfCards;
     imgBase.buildPicsDataBase();
     cards.reset();
-    game.score = 0;
-    game.guesses = 0;
-    game.finalScore = 100;
 };
 
 imgBase.buildPicsDataBase = async () => {
@@ -198,7 +203,6 @@ cards.match=()=>{
 };
 
 cards.fillipBack = () =>{
-    console.log(game.finalScore);
     setTimeout(() => {
         $(cards.card1).removeClass('is-flipped');
         $(cards.card2).removeClass('is-flipped');
